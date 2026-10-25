@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 import { type AppStoreResult } from './apps/useAppStoreSearch';
-import loadImage from './canvas/loadImage';
-import drawSquirclePath from './canvas/drawSquircle';
 import SelectedAppCard from './apps/SelectedAppCard';
 import AppSelectorDialog from './apps/AppSelectorDialog';
 import ColourPicker from './styles/ColourPicker';
 import { COLOUR_OPTIONS } from './styles/COLOUR_OPTIONS';
 import LayoutPicker from './styles/LayoutPicker';
-import { LAYOUT_OPTIONS, layoutIconToCanvasSize, type LayoutOptionIcon } from './styles/LAYOUT_OPTIONS';
+import { LAYOUT_OPTIONS } from './styles/LAYOUT_OPTIONS';
 import drawSplitIcon from './canvas/drawSplitIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightLeft, faDownload } from '@fortawesome/free-solid-svg-icons'
