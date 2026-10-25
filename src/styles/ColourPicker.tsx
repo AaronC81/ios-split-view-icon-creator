@@ -1,6 +1,8 @@
 import { COLOUR_OPTIONS } from "./COLOUR_OPTIONS";
 
 export default function ColourPicker({ selected, onSelect }: { selected?: string, onSelect: (selection: string) => void }) {
+  const isDarkMode = matchMedia("(prefers-color-scheme: dark)").matches;
+
   return (
     <div>
       <div className="grid grid-cols-5 gap-2 w-full place-items-center">
@@ -14,12 +16,12 @@ export default function ColourPicker({ selected, onSelect }: { selected?: string
                 ? {
                     backgroundImage: `linear-gradient(to bottom, ${colourOption.top}, ${colourOption.bottom})`,
                     outline: key === selected
-                      ? `3px solid ${colourOption.selectedBorder ?? "black"}`
+                      ? `3px solid ${colourOption.selectedBorder ?? (isDarkMode ? "white" : "black")}`
                       : (colourOption.optionBorder ? `1px solid ${colourOption.optionBorder}` : undefined),
                   }
                 : {
                   outline: key === selected
-                    ? `3px solid black`
+                    ? `3px solid ${isDarkMode ? "white" : "black"}`
                     : "1px solid #aaa",
                 }
             }

@@ -39,7 +39,7 @@ export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
     <dialog
       ref={dialogRef}
       closedby="any"
-      className="mx-auto my-15 lg:my-auto p-4 border border-gray-700 shadow-2xl w-full max-w-[800px] overflow-y-scroll"
+      className="mx-auto my-15 lg:my-auto p-4 border border-gray-700 shadow-2xl w-full max-w-[800px] overflow-y-scroll dark:bg-gray-900"
     >
       <div className="flex flex-row justify-between">
         <h2 className="font-bold">Choose {selecting} app</h2>
@@ -52,7 +52,7 @@ export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
         type="text"
         value={search}
         onChange={e => setSearch(e.target.value)}
-        className="border border-gray-500 w-full px-2 py-1 rounded-lg my-2"
+        className="border border-gray-500 w-full px-2 py-1 rounded-lg my-2 dark:bg-gray-800"
         placeholder="Type an app name..."
       />
       <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-5 pb-5">

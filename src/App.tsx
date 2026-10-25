@@ -114,7 +114,7 @@ function App() {
         <canvas id="icon-canvas" width={CANVAS_SIZE} height={CANVAS_SIZE} className="w-50" />
 
         <button
-          className="mx-auto w-full md:max-w-80 p-2 rounded-xl bg-blue-300 shadow font-bold border-2 border-blue-400"
+          className="mx-auto w-full md:max-w-80 p-2 rounded-xl bg-blue-300 dark:bg-blue-600 shadow font-bold border-2 border-blue-400 dark:border-blue-800"
           onClick={handleDownload}
         >
           <FontAwesomeIcon icon={faDownload} />

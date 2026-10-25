@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+  }
+
+  * {
+    color: #EEE;
+  }
+}
