@@ -5,6 +5,8 @@ import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <div className="max-w-200 mx-auto">
+      <App />
+    </div>
   </StrictMode>,
 )
