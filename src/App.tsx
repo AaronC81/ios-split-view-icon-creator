@@ -11,6 +11,7 @@ import { LAYOUT_OPTIONS, layoutIconToCanvasSize, type LayoutOptionIcon } from '.
 import drawSplitIcon from './canvas/drawSplitIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightLeft, faDownload } from '@fortawesome/free-solid-svg-icons'
+import exampleImage from "./example.jpg"
 
 const CANVAS_SIZE = 1024;
 
@@ -76,7 +77,7 @@ function App() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold p-2">Split View Icon Creator</h1>
+      <h1 className="text-2xl font-bold p-2">iOS Split View Icon Creator</h1>
 
       <AppSelectorDialog 
         selecting={selectingApp} 
@@ -109,18 +110,32 @@ function App() {
         </div>
       </div>
 
-      <div className="p-2 flex flex-col w-full items-center">
-        <div className="p-2">
-          <canvas id="icon-canvas" width={CANVAS_SIZE} height={CANVAS_SIZE} className="w-50" />
-        </div>
+      <div className="p-2 flex flex-col w-full items-center gap-4">
+        <canvas id="icon-canvas" width={CANVAS_SIZE} height={CANVAS_SIZE} className="w-50" />
 
         <button
-          className="mx-auto w-full md:max-w-80 p-2 rounded-xl bg-blue-300"
+          className="mx-auto w-full md:max-w-80 p-2 rounded-xl bg-blue-300 shadow font-bold border-2 border-blue-400"
           onClick={handleDownload}
         >
           <FontAwesomeIcon icon={faDownload} />
           Download
         </button>
+
+        <details className="max-w-130">
+          <summary>What is this, and how do I use it?</summary>
+
+          <p>This little site lets you create a custom iOS icon which shows two app icons together. You can use this to represent a pair of apps for Split View on the iPhone Duo:</p>
+
+          <img src={exampleImage} alt="An iOS Home Screen icon labelled 'Maps + Safari'" className="h-[10em] mx-auto my-2" />
+
+          <p>You can't natively save Split View app pairs to your Home Screen. As a workaround, you can launch Split View from a Shortcut.</p>
+
+          <ol className="list-decimal ml-5 mt-2">
+            <li>Create a Shortcut which uses the <i>Split screen between ...</i> action.</li>
+            <li>Open the Shortcut's menu and choose <i>Add to Home Screen</i>.</li>
+            <li>Use the <i>Image</i> tab to select the downloaded icon.</li>
+          </ol>
+        </details>
       </div>
     </>
   )
