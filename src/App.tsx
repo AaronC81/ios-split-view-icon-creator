@@ -60,9 +60,15 @@ function App() {
       shadow,
     );
 
+    // iOS Safari can't download large data: URLs, so use a blob URL instead
+    const blob = await new Promise<Blob>((resolve) => {
+      canvas.toBlob(b => resolve(b!), "image/png");
+    });
+    const url = URL.createObjectURL(blob);
+
     const link = document.createElement('a');
     link.download = `split-icon.png`;
-    link.href = canvas.toDataURL();
+    link.href = url;
     link.click();
   };
 
