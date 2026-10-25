@@ -3,8 +3,8 @@ import { type LayoutOptionIcon, layoutIconToCanvasSize } from "../styles/LAYOUT_
 import drawSquirclePath from "./drawSquircle";
 import loadImage from "./loadImage";
 
-export async function drawAppIcon(ctx: CanvasRenderingContext2D, app: AppStoreResult, icon: LayoutOptionIcon, shadow: boolean) {
-  const { x, y, size } = layoutIconToCanvasSize(icon, 512);
+export default async function drawAppIcon(ctx: CanvasRenderingContext2D, canvasSize: number, app: AppStoreResult, icon: LayoutOptionIcon, shadow: boolean) {
+  const { x, y, size } = layoutIconToCanvasSize(icon, canvasSize);
   const image = await loadImage(app.iconUrl512);
 
   if (shadow) {

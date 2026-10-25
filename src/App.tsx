@@ -8,8 +8,9 @@ import ColourPicker from './styles/ColourPicker';
 import { COLOUR_OPTIONS } from './styles/COLOUR_OPTIONS';
 import LayoutPicker from './styles/LayoutPicker';
 import { LAYOUT_OPTIONS, layoutIconToCanvasSize, type LayoutOptionIcon } from './styles/LAYOUT_OPTIONS';
-import { drawAppIcon } from './canvas/drawAppIcon';
+import drawSplitIcon from './canvas/drawSplitIcon';
 
+const CANVAS_SIZE = 1024;
 
 function App() {
   const [leftApp, setLeftApp] = useState<AppStoreResult | undefined>();
@@ -27,48 +28,37 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      console.log("redraw");
-
       const canvas = document.getElementById("icon-canvas") as HTMLCanvasElement;
-
-      const ctx = canvas.getContext("2d")!;
-      // TODO: make canvas larger than this for better resolution
-      ctx.clearRect(0, 0, 512, 512);
-
-      ctx.beginPath();
-      ctx.save();
-
-      // NOTE: we should not export as squircle, shortcuts will crop it
-      drawSquirclePath(ctx, 0, 0, 512);
-      ctx.clip();
-
-      const colourOption = COLOUR_OPTIONS[colour];
-      if (colourOption.type === "solid") {
-        ctx.fillStyle = colourOption.colour;
-      } else if (colourOption.type === "gradient") {
-        // TODO: is this gradient correct?
-        const gradient = ctx.createLinearGradient(256, 0, 256, 512);
-        gradient.addColorStop(0, colourOption.top);
-        gradient.addColorStop(1, colourOption.bottom);
-        ctx.fillStyle = gradient;
-      }
-      ctx.fillRect(0, 0, 512, 512);
-      ctx.restore();
-
-      const layoutOption = LAYOUT_OPTIONS[layout];
-
-      // Drawing right before is important for "overlapping" views
-      if (rightApp) {
-        await drawAppIcon(ctx, rightApp, layoutOption.right, shadow);
-      }
-      if (leftApp) {
-        await drawAppIcon(ctx, leftApp, layoutOption.left, shadow);
-      }
+      
+      await drawSplitIcon(
+        canvas.getContext("2d")!,
+        CANVAS_SIZE,
+        true,
+        leftApp,
+        rightApp,
+        COLOUR_OPTIONS[colour]!,
+        LAYOUT_OPTIONS[layout]!,
+        shadow,
+      );
     })();
   }, [leftApp, rightApp, colour, layout, shadow]);
 
-  const handleDownload = () => {
-    const canvas = document.getElementById("icon-canvas") as HTMLCanvasElement;
+  const handleDownload = async () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = CANVAS_SIZE;
+    canvas.height = CANVAS_SIZE;
+    
+    const ctx = canvas.getContext("2d")!;
+    await drawSplitIcon(
+      ctx,
+      CANVAS_SIZE,
+      false,
+      leftApp,
+      rightApp,
+      COLOUR_OPTIONS[colour]!,
+      LAYOUT_OPTIONS[layout]!,
+      shadow,
+    );
 
     const link = document.createElement('a');
     link.download = `split-icon.png`;
@@ -115,7 +105,7 @@ function App() {
         </button>
       </div>
 
-      <canvas id="icon-canvas" width="512" height="512" className="w-50" />
+      <canvas id="icon-canvas" width={CANVAS_SIZE} height={CANVAS_SIZE} className="w-50" />
     </>
   )
 }
