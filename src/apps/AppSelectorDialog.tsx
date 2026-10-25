@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { AppStoreResult } from "./useAppStoreSearch";
 import useAppStoreSearch from "./useAppStoreSearch";
+import { faClose } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
   selecting: "left" | "right" | undefined,
@@ -41,7 +43,9 @@ export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
     >
       <div className="flex flex-row justify-between">
         <h2 className="font-bold">Choose {selecting} app</h2>
-        <button className="cursor-pointer" onClick={onClose}>Close</button>
+        <button className="cursor-pointer" onClick={onClose}>
+          <FontAwesomeIcon icon={faClose} />
+        </button>
       </div>
       <input
         ref={searchInputRef}
@@ -49,6 +53,7 @@ export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
         value={search}
         onChange={e => setSearch(e.target.value)}
         className="border border-gray-500 w-full px-2 py-1 rounded-lg my-2"
+        placeholder="Type an app name..."
       />
       <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-5 pb-5">
         {results?.map(result =>

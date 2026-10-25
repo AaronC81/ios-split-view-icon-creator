@@ -9,6 +9,8 @@ import { COLOUR_OPTIONS } from './styles/COLOUR_OPTIONS';
 import LayoutPicker from './styles/LayoutPicker';
 import { LAYOUT_OPTIONS, layoutIconToCanvasSize, type LayoutOptionIcon } from './styles/LAYOUT_OPTIONS';
 import drawSplitIcon from './canvas/drawSplitIcon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightLeft, faDownload } from '@fortawesome/free-solid-svg-icons'
 
 const CANVAS_SIZE = 1024;
 
@@ -91,7 +93,9 @@ function App() {
 
       <div className="flex flex-row gap-2 p-2">
         <SelectedAppCard app={leftApp} onClick={() => setSelectingApp("left")} />
-        <button className="cursor-pointer" onClick={handleSwapApps}>Swap</button>
+        <button className="cursor-pointer" onClick={handleSwapApps}>
+          <FontAwesomeIcon icon={faRightLeft} />
+        </button>
         <SelectedAppCard app={rightApp} onClick={() => setSelectingApp("right")} />
       </div>
 
@@ -114,6 +118,7 @@ function App() {
             className="w-full md:max-w-80 p-2 rounded-xl bg-blue-300"
             onClick={handleDownload}
           >
+            <FontAwesomeIcon icon={faDownload} />
             Download
           </button>
         </div>
