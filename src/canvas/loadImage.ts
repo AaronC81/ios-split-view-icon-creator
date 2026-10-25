@@ -13,6 +13,7 @@ export default async function loadImage(url: string): Promise<HTMLImageElement> 
 
     CACHE[url] = image;
   });
+  image.crossOrigin = "anonymous";
   image.src = url;
 
   return promise;

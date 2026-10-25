@@ -32,6 +32,7 @@ function App() {
       const canvas = document.getElementById("icon-canvas") as HTMLCanvasElement;
 
       const ctx = canvas.getContext("2d")!;
+      // TODO: make canvas larger than this for better resolution
       ctx.clearRect(0, 0, 512, 512);
 
       ctx.beginPath();
@@ -66,10 +67,18 @@ function App() {
     })();
   }, [leftApp, rightApp, colour, layout, shadow]);
 
+  const handleDownload = () => {
+    const canvas = document.getElementById("icon-canvas") as HTMLCanvasElement;
+
+    const link = document.createElement('a');
+    link.download = `split-icon.png`;
+    link.href = canvas.toDataURL();
+    link.click();
+  };
+
+  // TODO: two columns on wide enough display (like Duo!), one otherwise
   return (
     <>
-      <canvas id="icon-canvas" width="512" height="512" />
-
       <AppSelectorDialog 
         selecting={selectingApp} 
         onClose={() => setSelectingApp(undefined)}
@@ -95,6 +104,18 @@ function App() {
         <input type="checkbox" className="mr-1" checked={shadow} onChange={e => setShadow(e.target.checked)} />
         Shadows
       </label>
+
+      <div className="mx-auto">
+        {/* TODO: add icon */}
+        <button
+          className="w-full max-w-80 p-2 rounded-xl bg-blue-300"
+          onClick={handleDownload}
+        >
+          Download
+        </button>
+      </div>
+
+      <canvas id="icon-canvas" width="512" height="512" className="w-50" />
     </>
   )
 }
