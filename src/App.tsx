@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
-import useAppStoreSearch, { type AppStoreResult } from './apps/useAppStoreSearch';
+import { useEffect, useState } from 'react'
+import { type AppStoreResult } from './apps/useAppStoreSearch';
 import loadImage from './canvas/loadImage';
 import drawSquirclePath from './canvas/drawSquircle';
-import AppSelector from './apps/AppSelectorDialog';
 import SelectedAppCard from './apps/SelectedAppCard';
 import AppSelectorDialog from './apps/AppSelectorDialog';
+import ColourPicker from './styles/ColourPicker';
+import { COLOUR_OPTIONS } from './styles/COLOUR_OPTIONS';
+import LayoutPicker from './styles/LayoutPicker';
+import { LAYOUT_OPTIONS, layoutIconToCanvasSize, type LayoutOptionIcon } from './styles/LAYOUT_OPTIONS';
+import { drawAppIcon } from './canvas/drawAppIcon';
+
 
 function App() {
   const [leftApp, setLeftApp] = useState<AppStoreResult | undefined>();
@@ -15,6 +20,10 @@ function App() {
   };
 
   const [selectingApp, setSelectingApp] = useState<"left" | "right" | undefined>();
+
+  const [colour, setColour] = useState("white");
+  const [layout, setLayout] = useState("sideBySide");
+  const [shadow, setShadow] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -28,41 +37,34 @@ function App() {
       ctx.beginPath();
       ctx.save();
 
+      // NOTE: we should not export as squircle, shortcuts will crop it
       drawSquirclePath(ctx, 0, 0, 512);
       ctx.clip();
 
-      ctx.fillStyle = "#007AFF";
-      ctx.fillRect(0, 0, 512, 512);
-
-        ctx.restore();
-
-      if (leftApp) {
-        ctx.beginPath();
-        ctx.save();
-
-        drawSquirclePath(ctx, 48, 48, 200);
-        ctx.clip();
-
-        const image = await loadImage(leftApp?.iconUrl512);
-        ctx.drawImage(image, 48, 48, 200, 200);
-
-        ctx.restore();
+      const colourOption = COLOUR_OPTIONS[colour];
+      if (colourOption.type === "solid") {
+        ctx.fillStyle = colourOption.colour;
+      } else if (colourOption.type === "gradient") {
+        // TODO: is this gradient correct?
+        const gradient = ctx.createLinearGradient(256, 0, 256, 512);
+        gradient.addColorStop(0, colourOption.top);
+        gradient.addColorStop(1, colourOption.bottom);
+        ctx.fillStyle = gradient;
       }
+      ctx.fillRect(0, 0, 512, 512);
+      ctx.restore();
 
+      const layoutOption = LAYOUT_OPTIONS[layout];
+
+      // Drawing right before is important for "overlapping" views
       if (rightApp) {
-        ctx.beginPath();
-        ctx.save();
-
-        drawSquirclePath(ctx, 264, 264, 200);
-        ctx.clip();
-
-        const image = await loadImage(rightApp?.iconUrl512);
-        ctx.drawImage(image, 264, 264, 200, 200);
-
-        ctx.restore();
+        await drawAppIcon(ctx, rightApp, layoutOption.right, shadow);
+      }
+      if (leftApp) {
+        await drawAppIcon(ctx, leftApp, layoutOption.left, shadow);
       }
     })();
-  }, [leftApp, rightApp]);
+  }, [leftApp, rightApp, colour, layout, shadow]);
 
   return (
     <>
@@ -85,6 +87,14 @@ function App() {
         <button className="cursor-pointer" onClick={handleSwapApps}>Swap</button>
         <SelectedAppCard app={rightApp} onClick={() => setSelectingApp("right")} />
       </div>
+
+      <ColourPicker selected={colour} onSelect={setColour} />
+      <LayoutPicker selected={layout} onSelect={setLayout} />
+
+      <label>
+        <input type="checkbox" className="mr-1" checked={shadow} onChange={e => setShadow(e.target.checked)} />
+        Shadows
+      </label>
     </>
   )
 }
