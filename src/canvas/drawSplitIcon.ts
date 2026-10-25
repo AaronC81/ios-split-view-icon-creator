@@ -24,10 +24,9 @@ export default async function drawSplitIcon(
     ctx.clip();
   }
 
-  if (colour.type === "solid") {
-    ctx.fillStyle = colour.colour;
+  if (colour.type === "custom") {
+    ctx.fillStyle = colour.colour!;
   } else if (colour.type === "gradient") {
-    // TODO: is this gradient correct?
     const gradient = ctx.createLinearGradient(size / 2, 0, size / 2, size);
     gradient.addColorStop(0, colour.top);
     gradient.addColorStop(1, colour.bottom);

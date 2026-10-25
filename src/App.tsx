@@ -24,7 +24,7 @@ function App() {
 
   const [selectingApp, setSelectingApp] = useState<"left" | "right" | undefined>();
 
-  const [colour, setColour] = useState("white");
+  const [colour, setColour] = useState("gRed");
   const [layout, setLayout] = useState("sideBySide");
   const [shadow, setShadow] = useState(true);
 
@@ -74,7 +74,6 @@ function App() {
     link.click();
   };
 
-  // TODO: two columns on wide enough display (like Duo!), one otherwise
   return (
     <>
       <h1 className="text-2xl font-bold p-2">Split View Icon Creator</h1>
@@ -99,29 +98,29 @@ function App() {
         <SelectedAppCard app={rightApp} onClick={() => setSelectingApp("right")} />
       </div>
 
-      <div className="p-2">
+      <div className="p-2 flex flex-col md:flex-row gap-4 justify-center">
         <ColourPicker selected={colour} onSelect={setColour} />
-        <LayoutPicker selected={layout} onSelect={setLayout} />
+        <div>
+          <LayoutPicker selected={layout} onSelect={setLayout} />
+          <label>
+            <input type="checkbox" className="mr-1 mt-5" checked={shadow} onChange={e => setShadow(e.target.checked)} />
+            Icon shadows
+          </label>
+        </div>
+      </div>
 
-        <label>
-          <input type="checkbox" className="mr-1" checked={shadow} onChange={e => setShadow(e.target.checked)} />
-          Shadows
-        </label>
-
+      <div className="p-2 flex flex-col w-full items-center">
         <div className="p-2">
-          <canvas id="icon-canvas" width={CANVAS_SIZE} height={CANVAS_SIZE} className="w-50 mx-auto" />
+          <canvas id="icon-canvas" width={CANVAS_SIZE} height={CANVAS_SIZE} className="w-50" />
         </div>
 
-        <div className="mx-auto">
-          {/* TODO: add icon */}
-          <button
-            className="w-full md:max-w-80 p-2 rounded-xl bg-blue-300"
-            onClick={handleDownload}
-          >
-            <FontAwesomeIcon icon={faDownload} />
-            Download
-          </button>
-        </div>
+        <button
+          className="mx-auto w-full md:max-w-80 p-2 rounded-xl bg-blue-300"
+          onClick={handleDownload}
+        >
+          <FontAwesomeIcon icon={faDownload} />
+          Download
+        </button>
       </div>
     </>
   )
