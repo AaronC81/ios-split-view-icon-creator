@@ -11,11 +11,13 @@ export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
   const { loading, error, results } = useAppStoreSearch(search);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const [lastSelecting, setLastSelecting] = useState(selecting);
   if (selecting !== lastSelecting) {
     if (selecting !== undefined) {
       dialogRef.current?.showModal();
+      searchInputRef.current?.focus();
     } else {
       dialogRef.current?.close();
     }
@@ -35,20 +37,20 @@ export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
     <dialog
       ref={dialogRef}
       closedby="any"
-      className="m-auto p-4 border border-gray-700 shadow-2xl w-full max-w-[800px] overflow-y-scroll"
+      className="mx-auto my-15 lg:my-auto p-4 border border-gray-700 shadow-2xl w-full max-w-[800px] overflow-y-scroll"
     >
       <div className="flex flex-row justify-between">
         <h2 className="font-bold">Choose {selecting} app</h2>
         <button className="cursor-pointer" onClick={onClose}>Close</button>
       </div>
       <input
+        ref={searchInputRef}
         type="text"
         value={search}
         onChange={e => setSearch(e.target.value)}
         className="border border-gray-500 w-full px-2 py-1 rounded-lg my-2"
-        autoFocus
       />
-      <div className="grid grid-cols-6 gap-5">
+      <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-5 pb-5">
         {results?.map(result =>
           <button key={result.id}
             className="cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis"
@@ -58,7 +60,7 @@ export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
             }}
           >
             {/* TODO: reserve aspect ratio */}
-            <img src={result.iconUrl512} />
+            <img src={result.iconUrl512} className="rounded-2xl shadow" />
             <span className="text-sm">{result.name}</span>
           </button>
         )}

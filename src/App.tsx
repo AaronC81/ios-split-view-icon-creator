@@ -75,6 +75,8 @@ function App() {
   // TODO: two columns on wide enough display (like Duo!), one otherwise
   return (
     <>
+      <h1 className="text-2xl font-bold p-2">Split View Icon Creator</h1>
+
       <AppSelectorDialog 
         selecting={selectingApp} 
         onClose={() => setSelectingApp(undefined)}
@@ -93,25 +95,29 @@ function App() {
         <SelectedAppCard app={rightApp} onClick={() => setSelectingApp("right")} />
       </div>
 
-      <ColourPicker selected={colour} onSelect={setColour} />
-      <LayoutPicker selected={layout} onSelect={setLayout} />
+      <div className="p-2">
+        <ColourPicker selected={colour} onSelect={setColour} />
+        <LayoutPicker selected={layout} onSelect={setLayout} />
 
-      <label>
-        <input type="checkbox" className="mr-1" checked={shadow} onChange={e => setShadow(e.target.checked)} />
-        Shadows
-      </label>
+        <label>
+          <input type="checkbox" className="mr-1" checked={shadow} onChange={e => setShadow(e.target.checked)} />
+          Shadows
+        </label>
 
-      <div className="mx-auto">
-        {/* TODO: add icon */}
-        <button
-          className="w-full max-w-80 p-2 rounded-xl bg-blue-300"
-          onClick={handleDownload}
-        >
-          Download
-        </button>
+        <div className="p-2">
+          <canvas id="icon-canvas" width={CANVAS_SIZE} height={CANVAS_SIZE} className="w-50 mx-auto" />
+        </div>
+
+        <div className="mx-auto">
+          {/* TODO: add icon */}
+          <button
+            className="w-full md:max-w-80 p-2 rounded-xl bg-blue-300"
+            onClick={handleDownload}
+          >
+            Download
+          </button>
+        </div>
       </div>
-
-      <canvas id="icon-canvas" width={CANVAS_SIZE} height={CANVAS_SIZE} className="w-50" />
     </>
   )
 }
