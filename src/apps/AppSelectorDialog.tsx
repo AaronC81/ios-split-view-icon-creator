@@ -64,8 +64,7 @@ export default function AppSelectorDialog({ selecting, onClose, onSelect }: {
               onClose();
             }}
           >
-            {/* TODO: reserve aspect ratio */}
-            <img src={result.iconUrl512} className="rounded-2xl shadow" />
+            <img src={result.iconUrl512} className="w-full aspect-square rounded-2xl shadow" />
             <span className="text-sm">{result.name}</span>
           </button>
         )}
